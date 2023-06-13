@@ -1,6 +1,5 @@
 const mysql = require("mysql2");
 const inquirer = require("inquirer");
-const db = require("./db");
 
 const connection = mysql.createConnection({
   host: "localhost",
@@ -64,19 +63,24 @@ function main() {
 function viewDepartments() {
   connection.query("SELECT * FROM department", (err, res) => {
     if (err) throw err;
+    console.table(res);
+    main();
   });
-  console.table(department);
 }
 
 function viewAllRoles() {
   connection.query("SELECT * FROM role", (err, res) => {
     if (err) throw err;
+    console.table(res);
+    main();
   });
 }
 
 function viewAllEmployees() {
   connection.query("SELECT * FROM employee", (err, res) => {
     if (err) throw err;
+    console.table(res);
+    main();
   });
 }
 
@@ -91,7 +95,7 @@ function addDepartment() {
     ])
     .then((answers) => {
       connection.query(
-        "INSERT INTO department SET ?",
+        `INSERT INTO department VALUES(${answers})`,
         [
           {
             first_name: answers.departmentName,
@@ -99,6 +103,7 @@ function addDepartment() {
         ],
         function (err, res) {
           console.log("department inserted");
+          main();
         }
       );
     });
@@ -123,6 +128,7 @@ function addRole() {
         ],
         function (err, res) {
           console.log("role inserted");
+          main();
         }
       );
     });
@@ -155,13 +161,14 @@ function addEmployee() {
         ],
         function (err, res) {
           console.log("employee inserted");
+          main();
         }
       );
     });
 }
 
 function updateEmployee() {
-  queryFunction.FindAllEmployees();
+  viewAllEmployees();
 
   inquirer
     .prompt([
@@ -189,6 +196,7 @@ function updateEmployee() {
         ],
         function (err, res) {
           console.log("employee role updated");
+          main();
         }
       );
     });
