@@ -1,5 +1,6 @@
 const mysql = require("mysql2");
 const inquirer = require("inquirer");
+const db = require("./db");
 
 const connection = mysql.createConnection({
   host: "localhost",
@@ -63,7 +64,8 @@ function main() {
 function viewDepartments() {
   connection.query("SELECT * FROM department", (err, res) => {
     if (err) throw err;
-  }).then;
+  });
+  console.table(department);
 }
 
 function viewAllRoles() {
